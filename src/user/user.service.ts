@@ -23,18 +23,37 @@ export class UserService {
   // Method to find a single user based on a unique field
   async getSingleUser(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: userWhereUniqueInput });
+    ...includedPrivateFields: (keyof User)[]
+  ): Promise<Partial<User> | null> {
+    return this.prisma.user.findUnique({
+      where: userWhereUniqueInput,
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        password: includedPrivateFields.includes('password'),
+        role: true,
+        location: true,
+        verification_token:
+          includedPrivateFields.includes('verification_token'),
+        verified: true,
+        created_at: true,
+      },
+    });
   }
 
   // Method to find all users
-  async getAllUsers(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
+  async getAllUsers(
+    params: {
+      skip?: number;
+      take?: number;
+      cursor?: Prisma.UserWhereUniqueInput;
+      where?: Prisma.UserWhereInput;
+      orderBy?: Prisma.UserOrderByWithRelationInput;
+    },
+    ...includedPrivateFields: (keyof User)[]
+  ): Promise<User[]> {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.user.findMany({
       skip,
@@ -42,21 +61,71 @@ export class UserService {
       cursor,
       where,
       orderBy,
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        password: includedPrivateFields.includes('password'),
+        role: true,
+        location: true,
+        verification_token:
+          includedPrivateFields.includes('verification_token'),
+        verified: true,
+        created_at: true,
+      },
     });
   }
 
   // Method to create a user
-  async createUser(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({ data });
+  async createUser(
+    data: Prisma.UserCreateInput,
+    ...includedPrivateFields: (keyof User)[]
+  ): Promise<User> {
+    return this.prisma.user.create({
+      data,
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        password: includedPrivateFields.includes('password'),
+        role: true,
+        location: true,
+        verification_token:
+          includedPrivateFields.includes('verification_token'),
+        verified: true,
+        created_at: true,
+      },
+    });
   }
 
   // Method to update a user
-  async updateUser(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }): Promise<User> {
+  async updateUser(
+    params: {
+      where: Prisma.UserWhereUniqueInput;
+      data: Prisma.UserUpdateInput;
+    },
+    ...includedPrivateFields: (keyof User)[]
+  ): Promise<User> {
     const { where, data } = params;
-    return this.prisma.user.update({ where, data });
+    return this.prisma.user.update({
+      where,
+      data,
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        password: includedPrivateFields.includes('password'),
+        role: true,
+        location: true,
+        verification_token:
+          includedPrivateFields.includes('verification_token'),
+        verified: true,
+        created_at: true,
+      },
+    });
   }
 
   // Method to delete a user

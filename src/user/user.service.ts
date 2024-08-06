@@ -39,6 +39,7 @@ export class UserService {
           includedPrivateFields.includes('verification_token'),
         verified: true,
         created_at: true,
+        profile_image: true,
       },
     });
   }
@@ -73,6 +74,7 @@ export class UserService {
           includedPrivateFields.includes('verification_token'),
         verified: true,
         created_at: true,
+        profile_image: true,
       },
     });
   }
@@ -96,6 +98,7 @@ export class UserService {
           includedPrivateFields.includes('verification_token'),
         verified: true,
         created_at: true,
+        profile_image: true,
       },
     });
   }
@@ -124,6 +127,7 @@ export class UserService {
           includedPrivateFields.includes('verification_token'),
         verified: true,
         created_at: true,
+        profile_image: true,
       },
     });
   }

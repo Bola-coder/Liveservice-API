@@ -11,6 +11,8 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { EmailModule } from './email/email.module';
 import { mailerConfig } from './config/mailer.config';
 import { AuthGuard } from './auth/auth.guard';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -21,8 +23,12 @@ import { AuthGuard } from './auth/auth.guard';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1d' },
     }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MailerModule.forRoot(mailerConfig),
     EmailModule,
+    CloudinaryModule,
   ],
   controllers: [AppController, UserController],
   providers: [
